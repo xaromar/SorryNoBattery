@@ -10,4 +10,8 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIImageView *onePercentOverlay;
+@property (weak, nonatomic) IBOutlet UILabel *labelNoImages;
+@property (weak, nonatomic) IBOutlet UIImageView *imageBackground;
+
 @end
