@@ -62,16 +62,25 @@
 #pragma mark - Screen proccesing
 
 -(UIImage *)takeScreenShoot{
-    UIGraphicsBeginImageContext(self.view.frame.size);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *screenShot = UIGraphicsGetImageFromCurrentImageContext();
+
+    CGSize screenDimensions = [[UIScreen mainScreen] bounds].size;
+    
+    // Create a graphics context with the target size
+    // (last parameter takes scale into account)
+    UIGraphicsBeginImageContextWithOptions(screenDimensions, NO, 0);
+    
+    // Render the view to a new context
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self.view.layer renderInContext:context];
+    
+    UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+    
     UIGraphicsEndImageContext();
     
-    return screenShot;
+    return screenshot;
 }
 
 -(void)saveToCameraRoll{
-    
     UIImageWriteToSavedPhotosAlbum([self takeScreenShoot], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 
@@ -82,6 +91,13 @@
     }
     else {
         NSLog(@"Image successfully saved");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations!"
+                                                        message:@"Image has saved successfully."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+
     }
 }
 
@@ -115,17 +131,48 @@
 -(void)doSingleTap{
     NSLog(@"Single Tap");
     
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicator.alpha = 1.0;
+    activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    [self presentViewController:imagePicker animated:YES completion:^{
+        [activityIndicator stopAnimating];
+    }];
 }
 
 -(void)doDoubleTap{
     NSLog(@"Double Tap");
+    
     if(self.imageSelected){
         [self getTopBarColor];
-        //Select the image for overlay
-        self.onePercentOverlay.hidden = !self.onePercentOverlay.hidden; //Change to save only and no go back to the previous battery level
+        [UIView animateWithDuration:1.0 animations:^{
+            if(self.onePercentOverlay.alpha == 0.0)
+                self.onePercentOverlay.alpha = 1.0;
+            else if(self.onePercentOverlay.alpha == 1.0)
+                self.onePercentOverlay.alpha = 0.0;
+        }];
+        [self saveToCameraRoll];
+    }
+    else {
+        NSLog(@"Show alert view");
+    }
+}
+
+-(void)doSwipe{
+    NSLog(@"Swipe");
+    if(self.imageSelected){
+        [self getTopBarColor];
+        [UIView animateWithDuration:1.0 animations:^{
+            if(self.onePercentOverlay.alpha == 0.0)
+                self.onePercentOverlay.alpha = 1.0;
+            else if(self.onePercentOverlay.alpha == 1.0)
+                self.onePercentOverlay.alpha = 0.0;
+        }];
         [self saveToCameraRoll];
     }
     else {
@@ -145,7 +192,6 @@
     
     self.imageBackground.image = image;
     self.imageBackground.hidden = false;
-    self.labelNoImages.hidden = true;
     self.imageSelected = true;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
@@ -155,9 +201,9 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
     self.imageBackground.image = nil;
     self.imageBackground.hidden = true;
-    self.labelNoImages.hidden = false;
     self.imageSelected = false;
-    self.onePercentOverlay.hidden = true;
+    self.onePercentOverlay.hidden = false;
+    self.onePercentOverlay.alpha = 0.0;
 }
 
 
@@ -169,11 +215,15 @@
     singleTap.numberOfTapsRequired = 1;
     [self.view addGestureRecognizer:singleTap];
     
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget: self action:@selector(doDoubleTap)];
-    doubleTap.numberOfTapsRequired = 2;
-    [self.view addGestureRecognizer:doubleTap];
+//    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget: self action:@selector(doDoubleTap)];
+//    doubleTap.numberOfTapsRequired = 2;
+//    [self.view addGestureRecognizer:doubleTap];
+//    
+//    [singleTap requireGestureRecognizerToFail:doubleTap];
     
-    [singleTap requireGestureRecognizerToFail:doubleTap];
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(doSwipe)];
+    [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
+    [self.view addGestureRecognizer:swipe];
 }
 
 

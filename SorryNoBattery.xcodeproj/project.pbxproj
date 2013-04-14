@@ -318,6 +318,7 @@
 				47D664E817170AAF007C33CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
