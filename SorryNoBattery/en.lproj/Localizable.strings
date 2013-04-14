@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  SorryNoBattery
+
+  Created by Xavi on 14/4/13.
+  Copyright (c) 2013 Xavier Roman. All rights reserved.
+*/
+
+"Congratulations" = "Congratulations";
+
+"Image has saved successfully" = "Image has saved successfully";
+
+"Error!" = "Error!";
+
+"Invalid image, please choose another one" = "Invalid image, please choose another one";
+
+
+
+

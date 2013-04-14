@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47158964171B024800ACB185 /* UIImage+Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 47158963171B024800ACB185 /* UIImage+Tools.m */; };
+		47158969171B06F300ACB185 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4715896B171B06F300ACB185 /* Localizable.strings */; };
+		4715896E171B0F9C00ACB185 /* 1PercentBlack.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 4715896D171B0F9C00ACB185 /* 1PercentBlack.JPG */; };
 		47D664C717170AAF007C33CA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D664C617170AAF007C33CA /* UIKit.framework */; };
 		47D664C917170AAF007C33CA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D664C817170AAF007C33CA /* Foundation.framework */; };
 		47D664CB17170AAF007C33CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D664CA17170AAF007C33CA /* CoreGraphics.framework */; };
@@ -24,6 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		47158962171B024800ACB185 /* UIImage+Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Tools.h"; sourceTree = "<group>"; };
+		47158963171B024800ACB185 /* UIImage+Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Tools.m"; sourceTree = "<group>"; };
+		47158967171B067900ACB185 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		47158968171B067900ACB185 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4715896A171B06F300ACB185 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4715896C171B072900ACB185 /* es */ = {isa = PBXFileReference; lastKnownFileType = file; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4715896D171B0F9C00ACB185 /* 1PercentBlack.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1PercentBlack.JPG; path = res/1PercentBlack.JPG; sourceTree = "<group>"; };
 		47D664C317170AAF007C33CA /* SorryNoBattery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SorryNoBattery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47D664C617170AAF007C33CA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		47D664C817170AAF007C33CA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -95,6 +105,9 @@
 				47D664DE17170AAF007C33CA /* MainStoryboard.storyboard */,
 				47D664E117170AAF007C33CA /* ViewController.h */,
 				47D664E217170AAF007C33CA /* ViewController.m */,
+				4715896B171B06F300ACB185 /* Localizable.strings */,
+				47158962171B024800ACB185 /* UIImage+Tools.h */,
+				47158963171B024800ACB185 /* UIImage+Tools.m */,
 				47D664CD17170AAF007C33CA /* Supporting Files */,
 			);
 			path = SorryNoBattery;
@@ -120,6 +133,7 @@
 				47D664F017170D46007C33CA /* Logo_small.png */,
 				47D664F217170D5B007C33CA /* Logo.png */,
 				47D664EA17170C05007C33CA /* 1PercentBlue.JPG */,
+				4715896D171B0F9C00ACB185 /* 1PercentBlack.JPG */,
 			);
 			name = res;
 			sourceTree = "<group>";
@@ -159,6 +173,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
 			);
 			mainGroup = 47D664BA17170AAF007C33CA;
 			productRefGroup = 47D664C417170AAF007C33CA /* Products */;
@@ -183,6 +198,8 @@
 				47D664ED17170C05007C33CA /* 1PercentBlue.JPG in Resources */,
 				47D664F117170D46007C33CA /* Logo_small.png in Resources */,
 				47D664F317170D5B007C33CA /* Logo.png in Resources */,
+				47158969171B06F300ACB185 /* Localizable.strings in Resources */,
+				4715896E171B0F9C00ACB185 /* 1PercentBlack.JPG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,16 +213,27 @@
 				47D664D317170AAF007C33CA /* main.m in Sources */,
 				47D664D717170AAF007C33CA /* AppDelegate.m in Sources */,
 				47D664E317170AAF007C33CA /* ViewController.m in Sources */,
+				47158964171B024800ACB185 /* UIImage+Tools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		4715896B171B06F300ACB185 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4715896A171B06F300ACB185 /* en */,
+				4715896C171B072900ACB185 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		47D664CF17170AAF007C33CA /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				47D664D017170AAF007C33CA /* en */,
+				47158968171B067900ACB185 /* es */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -214,6 +242,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				47D664DF17170AAF007C33CA /* en */,
+				47158967171B067900ACB185 /* es */,
 			);
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";

@@ -8,6 +8,13 @@
 
 #import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+Tools.h"
+
+#define THRESHOLD 5 //RGB value comparison between screenshot and top bar file
+
+static NSString * const kOnePercentBlueFileName = @"1PercentBlue.JPG";
+static NSString * const kOnePercentBlackFileName = @"1PercentBlack.JPG";
+
 
 @interface ViewController ()<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
@@ -16,48 +23,6 @@
 @end
 
 @implementation ViewController
-
-#pragma mark Put in into a category
-
-+ (NSArray*)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy count:(int)count
-{
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity:count];
-    
-    // First get the image into your data buffer
-    CGImageRef imageRef = [image CGImage];
-    NSUInteger width = CGImageGetWidth(imageRef);
-    NSUInteger height = CGImageGetHeight(imageRef);
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
-    NSUInteger bytesPerPixel = 4;
-    NSUInteger bytesPerRow = bytesPerPixel * width;
-    NSUInteger bitsPerComponent = 8;
-    CGContextRef context = CGBitmapContextCreate(rawData, width, height,
-                                                 bitsPerComponent, bytesPerRow, colorSpace,
-                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
-    CGColorSpaceRelease(colorSpace);
-    
-    CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
-    CGContextRelease(context);
-    
-    // Now your rawData contains the image data in the RGBA8888 pixel format.
-    int byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
-    for (int ii = 0 ; ii < count ; ++ii)
-    {
-        CGFloat red   = (rawData[byteIndex]     * 1.0) / 255.0;
-        CGFloat green = (rawData[byteIndex + 1] * 1.0) / 255.0;
-        CGFloat blue  = (rawData[byteIndex + 2] * 1.0) / 255.0;
-        CGFloat alpha = (rawData[byteIndex + 3] * 1.0) / 255.0;
-        byteIndex += 4;
-        
-        UIColor *acolor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-        [result addObject:acolor];
-    }
-    
-    free(rawData);
-    
-    return result;
-}
 
 #pragma mark - Screen proccesing
 
@@ -80,6 +45,8 @@
     return screenshot;
 }
 
+#pragma mark - Save to Camera Roll
+
 -(void)saveToCameraRoll{
     UIImageWriteToSavedPhotosAlbum([self takeScreenShoot], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
@@ -90,9 +57,9 @@
         NSLog(@"There is an error");
     }
     else {
-        NSLog(@"Image successfully saved");
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations!"
-                                                        message:@"Image has saved successfully."
+        //NSLog(@"Image successfully saved");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Congratulations!",nil)
+                                                        message:NSLocalizedString(@"Image has saved successfully",nil)
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -101,35 +68,53 @@
     }
 }
 
+-(BOOL)compareArray:(NSArray*)array1 withArray:(NSArray*)array2 andThreshold:(int)threshold{
+    if(array1.count != array2.count) return FALSE;
+    
+    for(int i=0;i<array1.count;i++){
+        NSNumber *number1 =[array1 objectAtIndex:i];
+        NSNumber *number2 =[array2 objectAtIndex:i];
+        int result = abs(number1.intValue - number2.intValue);
+        if(result > threshold) return FALSE;
+    }
+    
+    return TRUE;
+}
 
-/*Return Values:
+
+/*
+ Return Values:
  0 = Blue TopBar
  1 = Black TopBar
  -1 = Unknown Color
  */
 - (NSUInteger) getTopBarColor {
     
-    NSArray *colorsArray = [ViewController getRGBAsFromImage:[self takeScreenShoot] atX:0 andY:0 count:1];
-    UIColor *colorIndex = (UIColor*) colorsArray [0];
-    CGColorRef color = [colorIndex CGColor];
-    int numComponents = CGColorGetNumberOfComponents(color);
-    if (numComponents == 4)
-    {
-        const CGFloat *components = CGColorGetComponents(color);
-        CGFloat red = components[0];
-        CGFloat green = components[1];
-        CGFloat blue = components[2];
-        CGFloat alpha = components[3];
-        
-        NSLog(@"%f   %f   %f   %f", red, green, blue, alpha);
+    NSArray *colorTopBarScreenshot = [UIImage getRGBAsFromImage:[self takeScreenShoot] atX:0 andY:10];
+    //NSLog(@"%@",colorTopBarScreenshot);
+    NSArray *colorTopBarBlue = [UIImage getRGBAsFromImage:[UIImage imageNamed:kOnePercentBlueFileName] atX:0 andY:10];
+    //NSLog(@"%@",colorTopBarBlue);
+    
+    if([self compareArray:colorTopBarScreenshot withArray:colorTopBarBlue andThreshold:THRESHOLD]){
+        NSLog(@"Blue tabBar detected");
+        return 0;
     }
-    return -1;
+    NSArray *colorTopBarBlack = [UIImage getRGBAsFromImage:[UIImage imageNamed:kOnePercentBlackFileName] atX:0 andY:10];
+    //NSLog(@"%@",colorTopBarBlack);
+    if([colorTopBarScreenshot isEqual:colorTopBarBlack]){
+        NSLog(@"Black tabBar detected");
+        return 1;
+    }
+    else{
+        NSLog(@"Translucent tabBar detected");
+        return -1;
+    }
 }
 
 #pragma mark - Gesture recognizer
 
 -(void)doSingleTap{
-    NSLog(@"Single Tap");
+    //NSLog(@"Single Tap");
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     activityIndicator.alpha = 1.0;
@@ -146,7 +131,7 @@
 }
 
 -(void)doDoubleTap{
-    NSLog(@"Double Tap");
+    //NSLog(@"Double Tap");
     
     if(self.imageSelected){
         [self getTopBarColor];
@@ -164,16 +149,30 @@
 }
 
 -(void)doSwipe{
-    NSLog(@"Swipe");
+    //NSLog(@"Swipe");
+    
     if(self.imageSelected){
-        [self getTopBarColor];
-        [UIView animateWithDuration:1.0 animations:^{
-            if(self.onePercentOverlay.alpha == 0.0)
-                self.onePercentOverlay.alpha = 1.0;
-            else if(self.onePercentOverlay.alpha == 1.0)
-                self.onePercentOverlay.alpha = 0.0;
-        }];
-        [self saveToCameraRoll];
+        int colorBar = [self getTopBarColor];
+        if(colorBar == -1){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error!",nil)
+                                                            message:NSLocalizedString(@"Invalid image, please choose another one",nil)
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        else{
+            if(colorBar == 0)self.onePercentOverlay.image = [UIImage imageNamed:kOnePercentBlueFileName];
+            else if (colorBar == 1)self.onePercentOverlay.image = [UIImage imageNamed:kOnePercentBlackFileName];
+            [UIView animateWithDuration:1.0 animations:^{
+                if(self.onePercentOverlay.alpha == 0.0){
+                    self.onePercentOverlay.alpha = 1.0;
+                    [self saveToCameraRoll];
+                }
+                else if(self.onePercentOverlay.alpha == 1.0)
+                    self.onePercentOverlay.alpha = 0.0;
+            }];
+        }
     }
     else {
         NSLog(@"Show alert view");
@@ -193,6 +192,7 @@
     self.imageBackground.image = image;
     self.imageBackground.hidden = false;
     self.imageSelected = true;
+    self.onePercentOverlay.alpha = 0.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -202,7 +202,6 @@
     self.imageBackground.image = nil;
     self.imageBackground.hidden = true;
     self.imageSelected = false;
-    self.onePercentOverlay.hidden = false;
     self.onePercentOverlay.alpha = 0.0;
 }
 
@@ -224,6 +223,12 @@
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(doSwipe)];
     [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
     [self.view addGestureRecognizer:swipe];
+      
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
 }
 
 
