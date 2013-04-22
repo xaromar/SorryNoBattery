@@ -21,14 +21,15 @@
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gOW-iS-DMy">
-                                <rect key="frame" x="34" y="72" width="260" height="187"/>
+                                <rect key="frame" x="34" y="72" width="260" height="355"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">1.- Take a screenshot (hold HOME + POWER buttons).
+                                <string key="text">1.- Take one snapshot of the screen that you want to change the battery level (hold  HOME + POWER buttons simultaneously).
 
-2.- One Tap to select the image.
+2.- Tap to go to your camera roll and select the image.
 
-3.- Swipe up to change the battery level and save the new image in your camera roll
-</string>
+3.- Swipe up to change the battery level and save the new image in your camera roll.
+
+Disclaimer: Obviously it does not change your real battery level, it just modify the battery value of the snapshot taken.</string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -40,11 +41,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" image="1PercentBlue.JPG" id="LoG-BP-aEb">
-                                <rect key="frame" x="238" y="0.0" width="82" height="20"/>
+                                <rect key="frame" x="189" y="0.0" width="131" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -59,7 +60,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1PercentBlue.JPG" width="164" height="40"/>
+        <image name="1PercentBlue.JPG" width="262" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

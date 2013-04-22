@@ -12,16 +12,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="PjW-mF-sVS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" image="1PercentBlue.JPG" id="LoG-BP-aEb">
-                                <rect key="frame" x="238" y="0.0" width="82" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Cómo funciona:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xFk-0M-WQw">
-                                <rect key="frame" x="102" y="36" width="117" height="22"/>
+                                <rect key="frame" x="102" y="14" width="117" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -29,13 +21,15 @@
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gOW-iS-DMy">
-                                <rect key="frame" x="34" y="66" width="260" height="224"/>
+                                <rect key="frame" x="30" y="40" width="260" height="419"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">1.- Realiza una captura de pantalla desde la aplicación correspondiente (mantén pulsados los botones MENU + BLOQUEO simultáneamente).
+                                <string key="text">1.- Realiza una captura de pantalla de la aplicación que quieres cambiar el nivel de batería (mantén pulsados los botones MENU + BLOQUEO simultáneamente).
 
 2.- Pulsa en la pantalla para seleccionar la imagen a modificar.
 
 3.- Desliza el dedo hacia arriba para modificar el nivel de batería y guardar la captura de pantalla en el carrete.
+
+Nota: Esta aplicación no altera de forma alguna el nivel real de tu batería. Únicamente modifica el nivel de batería que aparece en la captura de pantalla seleccionada.
 </string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -43,8 +37,16 @@
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="PjW-mF-sVS">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" image="1PercentBlue.JPG" id="LoG-BP-aEb">
+                                <rect key="frame" x="189" y="0.0" width="131" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -59,8 +61,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1PercentBlue.JPG" width="164" height="40"/>
+        <image name="1PercentBlue.JPG" width="262" height="40"/>
     </resources>
+    <classes>
+        <class className="ViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageBackground" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="onePercentOverlay" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -96,17 +96,17 @@ static NSString * const kOnePercentBlackFileName = @"1PercentBlack.JPG";
     //NSLog(@"%@",colorTopBarBlue);
     
     if([self compareArray:colorTopBarScreenshot withArray:colorTopBarBlue andThreshold:THRESHOLD]){
-        NSLog(@"Blue tabBar detected");
+        //NSLog(@"Blue tabBar detected");
         return 0;
     }
     NSArray *colorTopBarBlack = [UIImage getRGBAsFromImage:[UIImage imageNamed:kOnePercentBlackFileName] atX:0 andY:10];
     //NSLog(@"%@",colorTopBarBlack);
     if([colorTopBarScreenshot isEqual:colorTopBarBlack]){
-        NSLog(@"Black tabBar detected");
+        //NSLog(@"Black tabBar detected");
         return 1;
     }
     else{
-        NSLog(@"Translucent tabBar detected");
+        //NSLog(@"Translucent tabBar detected");
         return -1;
     }
 }
@@ -140,8 +140,11 @@ static NSString * const kOnePercentBlackFileName = @"1PercentBlack.JPG";
                 self.onePercentOverlay.alpha = 1.0;
             else if(self.onePercentOverlay.alpha == 1.0)
                 self.onePercentOverlay.alpha = 0.0;
+        }
+        completion:^(BOOL finished) {
+            if((finished) && (self.onePercentOverlay.alpha == 1.0))
+                [self saveToCameraRoll];
         }];
-        [self saveToCameraRoll];
     }
     else {
         NSLog(@"Show alert view");
@@ -167,11 +170,15 @@ static NSString * const kOnePercentBlackFileName = @"1PercentBlack.JPG";
             [UIView animateWithDuration:1.0 animations:^{
                 if(self.onePercentOverlay.alpha == 0.0){
                     self.onePercentOverlay.alpha = 1.0;
-                    [self saveToCameraRoll];
                 }
                 else if(self.onePercentOverlay.alpha == 1.0)
                     self.onePercentOverlay.alpha = 0.0;
+            }
+            completion:^(BOOL finished) {
+                if((finished) && (self.onePercentOverlay.alpha == 1.0))
+                    [self saveToCameraRoll];
             }];
+             
         }
     }
     else {
